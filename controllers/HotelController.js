@@ -54,7 +54,7 @@ class HotelController {
         }
         let id = +req.params.id
         Hotel.findOne({
-            include: [Customer,Review],
+            include: [Review],
             where:{id}
         })
         .then(data => {

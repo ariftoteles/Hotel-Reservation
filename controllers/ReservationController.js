@@ -1,4 +1,4 @@
-const {Reservation, Hotel, Customer, Review} = require('../models/index')
+const {Reservation, Hotel, Customer, Review, HotelCustomer} = require('../models/index')
 const getAmount = require('../helpers/getAmount')
 const convertDate = require('../helpers/convertDate')
 const formatRupiah = require('../helpers/formatRupiah')
@@ -11,15 +11,34 @@ class ReservationController{
             HotelId: +req.params.id,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
-            totalRoom: req.body.totalRoom
+            totalRoom: +req.body.totalRoom,
         }
-        Hotel.findByPk(value.HotelId)
+        let customerId = +req.session.userId
+        let hotelId = +req.params.id
+        Hotel.findByPk(hotelId)
         .then(data => {
             value.amount = getAmount(value.checkOut, value.checkIn, value.totalRoom, data.price)
+            value.nameHotel = data.name
+            value.city = data.city
+            console.log(value)
             return Reservation.create(value)
         })
-        .then(()=> res.redirect('/customers/reservation'))
-        .catch(err => res.send(err))
+        .then((data)=> {
+            return HotelCustomer.create({
+                CustomerId: customerId,
+                HotelId: hotelId,
+                ReservationId: data.id
+            })
+        })
+        .then(() => {
+            res.redirect('/customers/reservation')
+        })
+        .catch(err => {
+            let errMsg = []
+            err.errors.forEach( el => {
+                errMsg.push(el.message)
+            })
+        })
     }
 
 
@@ -37,7 +56,6 @@ class ReservationController{
             order: [['checkIn', 'ASC']]
         })
         .then(data => {
-            // res.send(data)
             res.render('booking-list', {data, name, convertDate, formatRupiah})
         })
         .catch(err => {
@@ -55,6 +73,7 @@ class ReservationController{
             include: [Hotel, Customer]
         })
         .then(data => {
+            // res.send(data)
             res.render('form-edit-booking', {data, name, dateToString})
         })
         .catch(err => res.send(err))
@@ -63,17 +82,21 @@ class ReservationController{
     static handleEditReservation(req, res){
         let value = {
             CustomerId: +req.session.userId,
-            HotelId: +req.params.id,
             checkIn: req.body.checkIn,
             checkOut: req.body.checkOut,
             totalRoom: req.body.totalRoom,
         }
         let id = +req.params.id
-        value.amount = getAmount(value.checkOut, value.checkIn, value.totalRoom, req.params.price)
-        Reservation.update(value, {
-            where: {
-                id: id
-            }
+        
+        Reservation.findByPk(id, {
+            include: [Hotel]
+        })
+        .then(data => {
+            value.HotelId = data.HotelId
+            value.nameHotel = data.nameHotel
+            value.city = data.city
+            value.amount = getAmount(value.checkOut, value.checkIn, value.totalRoom, data.Hotel.price)
+            return Reservation.update(value, {where: {id}})
         })
         .then(() => res.redirect('/customers/reservation'))
         .catch(err => res.send(err))

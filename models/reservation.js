@@ -18,9 +18,50 @@ module.exports = (sequelize, DataTypes) => {
   Reservation.init({
     CustomerId: DataTypes.INTEGER,
     HotelId: DataTypes.INTEGER,
-    checkIn: DataTypes.DATE,
-    checkOut: DataTypes.DATE,
-    totalRoom: DataTypes.INTEGER,
+    nameHotel: DataTypes.STRING,
+    city: DataTypes.STRING,
+    checkIn: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: "Check in harus di isi"
+        },
+        isTomorow(value){
+          let result = new Date(value).getTime() - new Date().getTime()
+          if (result < 1){
+            throw new Error('Tidak bisa check in pada hari ini')
+          }
+        }
+      }
+    },
+    checkOut: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: "Check Out harus di isi"
+        },
+        moreThanCheckIn(value){
+          // console.log(this.checkIn);
+          let result = new Date(value).getTime() - new Date(this.checkIn).getTime()
+          if (result < 1){
+            throw new Error('Tidak bisa check out pada hari yang sama')
+          }
+        }
+      }
+    },
+    totalRoom: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "Kamar harus di isi"
+        },
+        greaterThanZero(value){
+          if (value < 1){
+            throw new Error('Kamar harus lebih dari 0')
+          }
+        }
+      }
+    },
     amount: DataTypes.INTEGER
   }, {
     sequelize,
@@ -28,3 +69,5 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Reservation;
 };
+
+

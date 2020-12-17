@@ -1,9 +1,25 @@
 'use strict';
 const {
-  Model
+  Model, QueryTypes
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Hotel extends Model {
+    static getAllHotels(){
+      return new Promise((resolve, reject) => {
+        sequelize.query(
+          `select * from "Hotels"`,
+        {
+          type: QueryTypes.SELECT
+        }
+      )
+        .then( data => {
+          resolve(data)
+        })
+        .catch( err => {
+          reject(err)
+        })
+      })
+    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.

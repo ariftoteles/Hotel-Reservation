@@ -21,7 +21,7 @@ module.exports = {
           name,
           city,
           price: price * 1000,
-          rating,
+          rating: 0,
           image,
           description : description.join(', '),
           createdAt: new Date(),
