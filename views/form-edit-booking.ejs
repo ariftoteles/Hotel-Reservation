@@ -1,0 +1,21 @@
+<%- include('partials/header', {title: "Form Edit"});-%>
+<%- include('partials/navbar');-%>
+
+<h1>Ubah Pesanan Hotel</h1>
+<form action="/customers/reservation/edit/<%= data.id%>/<%= data.Hotel.price%>" method="POST">
+    <div class="form-group">
+        <label for="checkIn">Check In</label>
+        <input type="date" class="form-control" id="checkIn" name="checkIn" value="<%= dateToString(data.checkIn)%>" required>
+    </div>
+    <div class="form-group">
+        <label for="checkOut">Check Out</label>
+        <input type="date" class="form-control" id="checkOut" name="checkOut" value="<%= dateToString(data.checkOut)%>" required>
+    </div>
+    <div class="form-group">
+        <label for="totalRoom">Kamar</label>
+        <input type="number" class="form-control" id="totalRoom" name="totalRoom" value="<%= data.totalRoom%>" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Ubah</button>
+</form>
+
+<%- include('partials/footer');-%>

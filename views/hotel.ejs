@@ -1,0 +1,60 @@
+<%- include('partials/header', {title: "Home"});-%>
+<%- include('partials/navbar');-%>
+
+<form action="/hotels" method="POST">
+    <div class="form-row align-items-center">
+        <div class="col-md-4 my-3">
+            <select class="custom-select" id="city" name="city" required>
+                <option selected disabled>Please Select City</option>
+                <option value="Bali"<%= data[0].city == 'Bali' ? 'selected' : ''%>>Bali</option>
+                <option value="Bandung" <%= data[0].city == 'Bandung' ? 'selected' : ''%>>Bandung</option>
+                <option value="Jakarta" <%= data[0].city == 'Jakarta' ? 'selected' : ''%>>Jakarta</option>
+                <option value="Jogja"<%= data[0].city == 'Jogja' ? 'selected' : ''%>>Jogja</option>
+                <option value="Semarang"<%= data[0].city == 'Semarang' ? 'selected' : ''%>>Semarang</option>
+                <option value="Solo"<%= data[0].city == 'Solo' ? 'selected' : ''%>>Solo</option>
+                <option value="Surabaya"<%= data[0].city == 'Surabaya' ? 'selected' : ''%>>Surabaya</option>
+            </select>
+        </div>
+        <div class="col-md-4 my-3">
+            <select class="custom-select" id="sort" name="sort" required>
+                <option selected disabled>Sort by</option>
+                    <option value="rating,DESC"<%= sort === 'rating,DESC' ? 'selected' : ''%>>Rating paling tinggi</option>
+                    <option value="price,DESC"<%= sort === 'price,DESC' ? 'selected' : ''%>>Harga paling tinggi</option>
+                    <option value="price,ASC"<%= sort === 'price,DESC' ? 'selected' : ''%>>Harga paling rendah</option>
+            </select>
+        </div>
+        <div class="col-auto my-3">
+            <button type="submit" class="btn btn-primary">Cari Hotel</button>
+        </div>
+    </div>
+</form>
+<% if (data){ %>
+    <div class="row row-cols-1 row-cols-md-1">
+        <% data.forEach( el => { %>
+        <div class="card mb-3" style="max-width: 100%;">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="<%= el.image%>" class="card-img" alt="..." style="height: 220px;">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <a href="/hotels/<%= el.id%>">
+                            <h5 class="card-title"><%= el.name%></h5>
+                        </a>
+                        <h6 class="card-subtitle mb-2 text-muted"><%= el.city%></h6>
+                        <h6><span class="card-rating"><%= el.rating%></span> <span class="card-rating2 text-muted"> reviewer
+                                (<%= el.Reviews.length%>)</span></h6>
+                        <p class="card-text"><small
+                                class="text-muted"><%= el.description.substring(0, 180) + " ..."%></small></p>
+                        <div class="card-footer">
+                            Rp <%= el.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+<% } %>
+
+<%- include('partials/footer');-%>
