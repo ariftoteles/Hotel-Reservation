@@ -1,7 +1,5 @@
 const {Reservation, Hotel, Customer, Review, HotelCustomer} = require('../models/index')
-const getAmount = require('../helpers/getAmount')
 const convertDate = require('../helpers/convertDate')
-const formatRupiah = require('../helpers/formatRupiah')
 const dateToString = require('../helpers/dateToString')
 
 class ReservationController{
@@ -17,7 +15,7 @@ class ReservationController{
         let hotelId = +req.params.id
         Hotel.findByPk(hotelId)
         .then(data => {
-            value.amount = getAmount(value.checkOut, value.checkIn, value.totalRoom, data.price)
+            value.amount = Reservation.getAmount(value.checkOut, value.checkIn, value.totalRoom, data.price)
             value.nameHotel = data.name
             value.city = data.city
             console.log(value)
@@ -38,6 +36,7 @@ class ReservationController{
             err.errors.forEach( el => {
                 errMsg.push(el.message)
             })
+            res.send(errMsg)
         })
     }
 
@@ -56,7 +55,7 @@ class ReservationController{
             order: [['checkIn', 'ASC']]
         })
         .then(data => {
-            res.render('booking-list', {data, name, convertDate, formatRupiah})
+            res.render('booking-list', {data, name, convertDate})
         })
         .catch(err => {
             res.send(err)
@@ -95,11 +94,17 @@ class ReservationController{
             value.HotelId = data.HotelId
             value.nameHotel = data.nameHotel
             value.city = data.city
-            value.amount = getAmount(value.checkOut, value.checkIn, value.totalRoom, data.Hotel.price)
+            value.amount = Reservation.getAmount(value.checkOut, value.checkIn, value.totalRoom, data.Hotel.price)
             return Reservation.update(value, {where: {id}})
         })
         .then(() => res.redirect('/customers/reservation'))
-        .catch(err => res.send(err))
+        .catch(err => {
+            let errMsg = []
+            err.errors.forEach( el => {
+                errMsg.push(el.message)
+            })
+            res.send(errMsg)
+        })
     }
     
     static deleteReservation(req, res){

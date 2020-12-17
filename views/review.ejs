@@ -10,7 +10,7 @@
     <h6 class="card-title text-muted"><%= data.city%></h6>
     <p class="card-text text-muted"><%= data.description%></p>
     <div class="card-footer">
-      Rp <%= data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")%>
+      <%= data.formatRupiah()%>
     </div>
     <div class="card-header">
       <form action="/hotels/<%= data.id%>/reservation" method="POST">

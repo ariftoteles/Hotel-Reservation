@@ -24,7 +24,7 @@
                 <td><%= convertDate(el.checkIn)%></td>
                 <td><%= convertDate(el.checkOut)%></td>
                 <td><%= el.totalRoom%></td>
-                <td><%= formatRupiah(el.amount)%></td>
+                <td><%= el.formatRupiah()%></td>
                 <td>
                     <a href="/customers/reservation/edit/<%= el.id%>" class="btn btn-info btn-sm" tabindex="-1" role="button">Ubah</a>
                     <a href="/customers/reservation/delete/<%= el.id%>" class="btn btn-info btn-sm" tabindex="-1" role="button">Batalkan</a>

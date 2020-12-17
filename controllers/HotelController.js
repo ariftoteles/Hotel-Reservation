@@ -14,7 +14,6 @@ class HotelController {
         })
         .then(data => {
             sort = sort.join(',')
-            // res.send(data)
             res.render('hotel', {data, sort, name})
         }) 
         .catch(err => res.send(err))

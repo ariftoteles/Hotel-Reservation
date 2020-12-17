@@ -4,6 +4,15 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Reservation extends Model {
+    formatRupiah() {
+      return `Rp. ${this.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")}`
+    }
+    static getAmount(checkOut, checkIn, room, price) {
+      let difTime = new Date(checkOut).getTime() - new Date(checkIn).getTime();
+      let day_dif = difTime / (1000 * 3600 * 24);
+      let amount = day_dif * room * price
+      return amount
+    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -26,10 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Check in harus di isi"
         },
-        isTomorow(value){
+        isTomorow(value) {
           let result = new Date(value).getTime() - new Date().getTime()
-          if (result < 1){
-            throw new Error('Tidak bisa check in pada hari ini')
+          if (result < 1) {
+            throw new Error('Tidak bisa check in pada hari ini/tanggal chekout tidak valid')
           }
         }
       }
@@ -40,11 +49,11 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Check Out harus di isi"
         },
-        moreThanCheckIn(value){
+        moreThanCheckIn(value) {
           // console.log(this.checkIn);
           let result = new Date(value).getTime() - new Date(this.checkIn).getTime()
-          if (result < 1){
-            throw new Error('Tidak bisa check out pada hari yang sama')
+          if (result < 1) {
+            throw new Error('Tidak bisa check out pada hari yang sama/tanggal check out tidak valid')
           }
         }
       }
@@ -55,8 +64,8 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: {
           msg: "Kamar harus di isi"
         },
-        greaterThanZero(value){
-          if (value < 1){
+        greaterThanZero(value) {
+          if (value < 1) {
             throw new Error('Kamar harus lebih dari 0')
           }
         }
@@ -69,5 +78,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Reservation;
 };
-
-

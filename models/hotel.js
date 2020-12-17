@@ -1,24 +1,12 @@
 'use strict';
 const {
-  Model, QueryTypes
+  Model,
+  QueryTypes
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Hotel extends Model {
-    static getAllHotels(){
-      return new Promise((resolve, reject) => {
-        sequelize.query(
-          `select * from "Hotels"`,
-        {
-          type: QueryTypes.SELECT
-        }
-      )
-        .then( data => {
-          resolve(data)
-        })
-        .catch( err => {
-          reject(err)
-        })
-      })
+    formatRupiah() {
+      return `Rp. ${this.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")}`
     }
     /**
      * Helper method for defining associations.
