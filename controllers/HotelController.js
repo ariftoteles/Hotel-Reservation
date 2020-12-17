@@ -14,7 +14,6 @@ class HotelController {
         })
         .then(data => {
             sort = sort.join(',')
-            // res.send(data)
             res.render('hotel', {data, sort, name})
         }) 
         .catch(err => res.send(err))
@@ -54,7 +53,7 @@ class HotelController {
         }
         let id = +req.params.id
         Hotel.findOne({
-            include: [Customer,Review],
+            include: [Review],
             where:{id}
         })
         .then(data => {

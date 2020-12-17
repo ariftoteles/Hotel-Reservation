@@ -2,7 +2,7 @@
 <%- include('partials/navbar');-%>
 
 <h1>Ubah Pesanan Hotel</h1>
-<form action="/customers/reservation/edit/<%= data.id%>/<%= data.Hotel.price%>" method="POST">
+<form action="/customers/reservation/edit/<%= data.id%>" method="POST">
     <div class="form-group">
         <label for="checkIn">Check In</label>
         <input type="date" class="form-control" id="checkIn" name="checkIn" value="<%= dateToString(data.checkIn)%>" required>

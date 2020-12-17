@@ -1,9 +1,13 @@
 'use strict';
 const {
-  Model
+  Model,
+  QueryTypes
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Hotel extends Model {
+    formatRupiah() {
+      return `Rp. ${this.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".")}`
+    }
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.

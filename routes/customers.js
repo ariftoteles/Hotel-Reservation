@@ -1,5 +1,4 @@
 const CustomerController = require('../controllers/CustomerController')
-const ReservationController = require('../controllers/ReservationController')
 const express = require('express')
 const reservation = require('./reservation')
 const router = express.Router()

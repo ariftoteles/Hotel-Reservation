@@ -30,6 +30,17 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      ReservationId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Reservations'
+          },
+          key: 'id'
+        },
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

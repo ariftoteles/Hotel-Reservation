@@ -19,8 +19,22 @@ module.exports = (sequelize, DataTypes) => {
     CustomerId: DataTypes.INTEGER,
     HotelId: DataTypes.INTEGER,
     username: DataTypes.STRING,
-    rating: DataTypes.INTEGER,
-    comment: DataTypes.TEXT
+    rating: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: "Rating harus diisi"
+        }
+      }
+    },
+    comment: {
+      type:  DataTypes.TEXT,
+      validate: {
+        notEmpty: {
+          msg: "Komentar harus di isi"
+        }
+      }
+    },
   }, {
     sequelize,
     modelName: 'Review',

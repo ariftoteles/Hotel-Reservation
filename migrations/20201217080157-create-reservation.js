@@ -30,6 +30,8 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade'
       },
+      nameHotel: Sequelize.STRING,
+      city: Sequelize.STRING,
       checkIn: {
         type: Sequelize.DATE
       },
