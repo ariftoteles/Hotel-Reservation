@@ -18,7 +18,6 @@ class ReservationController{
             value.amount = Reservation.getAmount(value.checkOut, value.checkIn, value.totalRoom, data.price)
             value.nameHotel = data.name
             value.city = data.city
-            console.log(value)
             return Reservation.create(value)
         })
         .then((data)=> {
@@ -28,8 +27,8 @@ class ReservationController{
                 ReservationId: data.id
             })
         })
-        .then(() => {
-            res.redirect('/customers/reservation')
+        .then((data) => {
+            res.redirect(`/nodemailer/${data.ReservationId}`)
         })
         .catch(err => {
             let errMsg = []
@@ -55,7 +54,7 @@ class ReservationController{
             order: [['checkIn', 'ASC']]
         })
         .then(data => {
-            res.render('booking-list', {data, name, convertDate})
+            res.render('reservation-list', {data, name, convertDate})
         })
         .catch(err => {
             res.send(err)
@@ -72,8 +71,7 @@ class ReservationController{
             include: [Hotel, Customer]
         })
         .then(data => {
-            // res.send(data)
-            res.render('form-edit-booking', {data, name, dateToString})
+            res.render('form-edit-reservation', {data, name, dateToString})
         })
         .catch(err => res.send(err))
     }
@@ -112,7 +110,9 @@ class ReservationController{
         Reservation.destroy({
             where:{id}
         })
-        .then(() => res.redirect('/customers/reservation'))
+        .then(() => {
+            res.redirect('/customers/reservation')
+        })
         .catch(err => res.send(err))
     }
 

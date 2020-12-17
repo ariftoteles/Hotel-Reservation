@@ -3,6 +3,9 @@ body {
     margin: 50px auto;
     text-align: center;
 }
+.navbar .nav-right {
+    float: right;
+}
 
 a:hover {
     text-decoration: none;
@@ -79,3 +82,4 @@ a:hover {
 .booking-list {
     font-size: 14px;
 }
+
