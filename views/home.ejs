@@ -1,0 +1,27 @@
+<%- include('partials/header', {title: "Home"});-%>
+<%- include('partials/navbar');-%>
+
+<form action="/hotels" method="POST">
+    <div class="form-row align-items-center">
+        <div class="col-md-4 my-3">
+            <select class="custom-select" id="city" name="city" required>
+                <option selected disabled>Please Select City</option>
+                <option value="Bali">Bali</option>
+                <option value="Bandung">Bandung</option>
+                <option value="Jakarta">Jakarta</option>
+                <option value="Jogja">Jogja</option>
+                <option value="Semarang">Semarang</option>
+                <option value="Solo">Solo</option>
+                <option value="Surabaya">Surabaya</option>
+            </select>
+        </div>
+        <div class="col-auto my-3">
+            <button type="submit" class="btn btn-primary">Cari Hotel</button>
+        </div>
+    </div>
+</form>
+<div class="jumbotron jumbotron-fluid ">
+    <!-- .... -->
+</div>
+
+<%- include('partials/footer');-%>
