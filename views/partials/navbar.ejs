@@ -1,16 +1,38 @@
-<nav class="navbar navbar-expand-lg navbar-light ">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            <a class="nav-link" href="/hotels">Hotel</a>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/hotels">Hotels</a>
+            </li>
             <% if (name) { %>
+            <li class="nav-item">
                 <a class="nav-link" href="/customers/reservation">ReservationList</a>
-                <a class="nav-link">Hi, <%= name %>!</a>
-                <a class="nav-link" href="/customers/logout">Logout</a>
-            <% } else { %>
-            <a class="nav-link" href="/customers/register">Register</a>
-            <a class="nav-link" href="/customers/login">Login</a>
-            <% }  %>
-        </div>
+            </li>
+            <% } %>
+        </ul>
+        <% if (name) { %>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <%= name%>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/customers/logout">Logout</a>
+                    </div>
+                  </li>
+            </ul>
+        <% } else { %>
+            <ul class="navbar-nav ml-auto ">
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers/register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers/login">Login</a>
+                </li>
+            </ul>
+        <% }  %>   
     </div>
 </nav>
