@@ -18,7 +18,7 @@ class ReservationController{
             value.amount = Reservation.getAmount(value.checkOut, value.checkIn, value.totalRoom, data.price)
             value.nameHotel = data.name
             value.city = data.city
-            console.log(value)
+            // console.log(value)
             return Reservation.create(value)
         })
         .then((data)=> {
@@ -28,8 +28,9 @@ class ReservationController{
                 ReservationId: data.id
             })
         })
-        .then(() => {
-            res.redirect('/customers/reservation')
+        .then((data) => {
+            res.redirect(`/nodemailer/${data.ReservationId}`)
+            // res.redirect('/customers/reservation')
         })
         .catch(err => {
             let errMsg = []
@@ -112,7 +113,10 @@ class ReservationController{
         Reservation.destroy({
             where:{id}
         })
-        .then(() => res.redirect('/customers/reservation'))
+        .then(() => {
+            res.redirect('/nodemailer')
+            // res.redirect('/customers/reservation')
+        })
         .catch(err => res.send(err))
     }
 
